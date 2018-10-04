@@ -123,10 +123,11 @@ class CodeBlock(Directive):
        Possible values: ('long', 'short', 'none')
 
     """
-    optional_arguments = 1
+    optional_arguments = 2
     option_spec = {'class': directives.class_option,
                    'name': directives.unchanged,
-                   'number-lines': directives.unchanged # integer or None
+                   'number-lines': directives.unchanged, # integer or None
+                   'endpar' : lambda arg: directives.choice(arg, ('true', 'false'))
                   }
     has_content = True
 
@@ -165,6 +166,8 @@ class CodeBlock(Directive):
         # if called from "include", set the source
         if 'source' in self.options:
             node.attributes['source'] = self.options['source']
+        if 'endpar' in self.options:
+            node.attributes['endpar'] = self.options['endpar']
         # analyze content and add nodes for every token
         for classes, value in tokens:
             # print (classes, value)
